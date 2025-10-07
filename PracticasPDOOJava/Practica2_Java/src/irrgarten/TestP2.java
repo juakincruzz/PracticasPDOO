@@ -8,7 +8,7 @@ package irrgarten;
  *
  * @author joaquin
  */
-public class TestP1 {
+public class TestP2 {
     public static void main(String[] args) {
         System.out.println("=== Enumerados ===");
         for (Directions d : Directions.values()) System.out.print(d + " ");

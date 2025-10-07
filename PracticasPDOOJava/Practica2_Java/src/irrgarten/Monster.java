@@ -19,10 +19,10 @@ public class Monster {
     /**
      * Crea un nuevo monstruo sin colocar en el laberinto.
      * 
-     * @param name
-     * @param intelligence
-     * @param strength
-     * @param health 
+     * @param name                  nombre del monstruo
+     * @param intelligence       nivel de inteligencia del monstruo
+     * @param strength            nivel de fuerza
+     * @param health               puntos de vida iniciales
      */
     public Monster(String name, float intelligence, float strength) {
         this.name = name;
@@ -54,7 +54,7 @@ public class Monster {
     }
     
     /**
-     * 
+     * Cambia la posición del monstruo en el laberinto.
      * @param row
      * @param col 
      */
@@ -68,6 +68,9 @@ public class Monster {
      */
     public void gotWounded() { health--; }
     
+    // ======================================
+    // REPRESENTACIÓN TEXTUAL
+    // ======================================
     @Override
     public String toString() { 
         return "Monster{" + "name= " + name + ", intelligence= " + intelligence + ", strength= " + strength + ", health= " + health + ", row= " + row + ", col= " + col + '}';

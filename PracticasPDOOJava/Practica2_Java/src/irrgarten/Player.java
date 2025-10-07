@@ -17,10 +17,10 @@ public class Player {
     // ==================================
     // CONSTANTES DE CLASE
     // ==================================
-    public static int MAX_WEAPONS = 2;
-    public static int MAX_SHIELDS = 3;
-    public static int INITIAL_HEALTH = 10;
-    public static int HITS2LOSE = 3;
+    private static final int MAX_WEAPONS = 2;
+    private static final int MAX_SHIELDS = 3;
+    private static final int INITIAL_HEALTH = 10;
+    private static final int HITS2LOSE = 3;
     
     // ==================================
     // ATRIBUTOS DE INSTANCIA 

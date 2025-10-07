@@ -15,7 +15,7 @@ public class Monster {
     // ===============================
     
     // Salud inicial por defecto para todos los monstruos.
-    public static int INITIAL_HEALTH = 5;
+    private static final int INITIAL_HEALTH = 5;
     
     // ===============================
     // ATRIBUTOS DE INSTANCIA

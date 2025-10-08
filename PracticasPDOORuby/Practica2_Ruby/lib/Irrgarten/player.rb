@@ -40,7 +40,50 @@ module Irrgarten
     end
 
     def defend(received_attack)
+      manage_hit(received_attack)
+    end
 
+    def new_weapon
+      Weapon.new(Dice.weapon_power, Dice.uses_left)
+    end
+
+    def new_shield
+      Shield.new(Dice.shields_power, Dice.uses_left)
+    end
+
+    def defensive_energy
+      @intelligence + sum_shields
+    end
+
+    def reset_hits
+      @consecutive_hits = 0
+    end
+
+    def got_wounded
+      @health -= 1
+    end
+
+    def inc_consecutive_hits
+      @consecutive_hits += 1
+    end
+
+    def sum_weapons
+      @weapons.sum {|w| w.attack}
+    end
+
+    def sum_shields
+      @shields.sum {|s| s.defend}
+    end
+
+    # --- P3: Se dejan en blanco porque son P3 ---
+    def receive_weapon(w) = (raise NotImplementedError, "P3")
+    def receive_shield(s) = (raise NotImplementedError, "P3")
+    def receive_reward = (raise NotImplementedError, "P3")
+    def manage_hit(received_attack) = (raise NotImplementedError, "P3")
+    def move(direction, valid_moves) = (raise NotImplementedError, "P3")
+
+    def to_s
+      "Player{nombre = '#{@name}', inteligencia = '#{@intelligence}', fuerza = '#{@strength}', salud = '#{@health}', posicion = (#{@row}, #{@col}), armas = '#{@weapons}', escudos = '#{@shields}'"
     end
   end
 end

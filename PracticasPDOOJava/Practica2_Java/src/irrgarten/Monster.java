@@ -15,7 +15,7 @@ public class Monster {
     // ===============================
     
     // Salud inicial por defecto para todos los monstruos.
-    private static final int INITIAL_HEALTH = 5;
+    public static final int INITIAL_HEALTH = 5;
     
     // ===============================
     // ATRIBUTOS DE INSTANCIA
@@ -43,6 +43,7 @@ public class Monster {
         this.name = name;
         this.intelligence = intelligence;
         this.strength = strength;
+        this.health = INITIAL_HEALTH;
     }
     
     /**

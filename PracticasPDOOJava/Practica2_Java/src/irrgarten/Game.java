@@ -44,7 +44,7 @@ public class Game {
         
         // 5) Repartir jugadores (en P3; aquí puede no estar implementado)
         try {
-            labyrinth.spreadPlayers(players.toArray(new Player[0]));
+            labyrinth.spreadPlayers(players);
         } catch (UnsupportedOperationException ex) {
             // Nada aún, se completa en P3
         }
@@ -82,14 +82,23 @@ public class Game {
      * Configura el laberinto añadiendo monstruos.
      * Los monstruos se guardan también en el contendor de esta clase.
      */
-    private void configureLabyrinth() {
+     void configureLabyrinth() {
         // Crear algunos monstruos con valores aleatorios razonables
         for (int i = 0; i < 3; i++) {
             Monster m = new Monster("M" + i, Dice.randomIntelligence(), Dice.randomStrength());
+            
             // Colocar una posición vacía aleatoria
             int[] pos = labyrinth.randomEmptyPos();
-            int var = 2;
+            labyrinth.addMonster(pos[Labyrinth.ROW], pos[Labyrinth.COL], m);
+            monsters.add(m);
         }
+    }
+    
+     /**
+      * Pasa el turno al siguiente jugador.
+      */
+    void nextPlayer() {
+        currentPlayerIndex = (currentPlayerIndex + 1) %players.size();
     }
     
     // ========================================
@@ -99,20 +108,32 @@ public class Game {
         throw new UnsupportedOperationException();
     }
     
-    private Directions actualDirection(Directions preferredDirection) {
+    Directions actualDirection(Directions preferredDirection) {
         throw new UnsupportedOperationException();
     }
     
-    private GameCharacter combat(Monster monster) {
+    GameCharacter combat(Monster monster) {
         throw new UnsupportedOperationException();
     }
     
-    private void manageReward(GameCharacter winner) {
+    void manageReward(GameCharacter winner) {
         throw new UnsupportedOperationException();
     }
     
-    private void manageResurrection(){
+    void manageResurrection(){
         throw new UnsupportedOperationException();
     }
     
+    
+    // ========================================
+    // MÉTODOS DE LOG 
+    // ========================================
+    
+    void logPlayerWon() { log += "Jugador ha ganado!\n"; }
+    void logMonsterWon() { log += "Monstruo ha ganado!\n"; }
+    void logResurrected() { log += "Jugador resucitado.\n"; }
+    void logPlayerSkipTurn() { log += "Jugador ha perdido turno (muerto)\n"; }
+    void logPlayerNoOrders() { log += "Jugador no ha recibido ordenes validas\n"; }
+    void lonNoMonster() { log += "No hay monstruo en esta casilla / sin movimiento\n"; }
+    void logRounds(int rounds, int max) { log += "Rondas: " + rounds + " / " + max + "\n"; }
 }

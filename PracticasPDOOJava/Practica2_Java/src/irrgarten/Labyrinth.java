@@ -21,8 +21,8 @@ public class Labyrinth {
     private static final char MONSTER_CHAR = 'M';
     private static final char COMBAT_CHAR = 'C';
     private static final char EXIT_CHAR = 'E';
-    private static final int ROW = 0;
-    private static final int COL = 1;
+    public static final int ROW = 0;
+    public static final int COL = 1;
     
     // ===============================
     // ATRIBUTOS DE INSTANCIA
@@ -142,9 +142,63 @@ public class Labyrinth {
         return labyrinth[row][col] == COMBAT_CHAR;
     }
     
+    /**
+     * Indica si se puede pisar la celda: debe estar dentro del tablero y ser vacía
+     * de monstruo o de salida (no muros).
+     * @param row
+     * @param col
+     * @return 
+     */
     private boolean canStepOn(int row, int col) {
         return false;
     }
+    
+    /**
+     * Deja la celda abandonada en estado correcto.
+     * Si estaba en combate ('C') pasa a 'M', en caso contrario pasa a '-'.
+     * Solo actúa si la posición es válida.ñ
+     * @param row
+     * @param col 
+     */
+    private void updateOldPos(int row, int col) {
+        if(!posOK(row, col)) return;
+        
+        if(labyrinth[row][col] == COMBAT_CHAR) labyrinth[row][col] = MONSTER_CHAR;
+        else labyrinth[row][col] = EMPTY_CHAR;
+        
+        players[row][col] = null; // Por coherencia, ninguna referencia del jugador
+    } 
+    
+    /**
+     * Calcula la posición a la que se llegaría desde (row, col) avanzando una 
+     * casilla en la {@code direction} indicada. No comprueba límites.
+     * @param row
+     * @param col
+     * @param direction
+     * @return par [row, col] resultante.
+     */
+    private int[] dir2Pos(int row, int col, Directions direction) {
+        switch(direction) {
+            case LEFT : return new int[]{row, col - 1};
+            case RIGHT : return new int[]{row, col + 1};
+            case UP : return new int[]{row - 1, col};
+            case DOWN : return new int[]{row + 1, col};
+            default : return new int[]{row, col};
+        }
+    }
+    
+    public int[] randomEmptyPos() {
+        while(true) {
+            int r = Dice.randomPos(nRows);
+            int c = Dice.randomPos(nCols);
+            
+            if(emptyPos(r, c)) return new int[]{r, c};
+        }
+    }
+    
+    // ===========================================
+    // P3
+    // ===========================================
     
     /**
      * 
@@ -183,5 +237,9 @@ public class Labyrinth {
      */
     public void spreadPlayers(ArrayList<Player> players) {
         throw new UnsupportedOperationException(); 
+    }
+    
+    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
+        throw new UnsupportedOperationException();
     }
 }

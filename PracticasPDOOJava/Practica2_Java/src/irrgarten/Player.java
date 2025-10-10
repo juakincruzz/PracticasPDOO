@@ -222,7 +222,7 @@ public class Player {
      * <p> En P2 no la implemento, la implemento en P3 </p>
      * @param s escudo a añadir
      */
-    private void receiveShields(Shield s) {
+    private void receiveShield(Shield s) {
         throw new UnsupportedOperationException();
     }
     

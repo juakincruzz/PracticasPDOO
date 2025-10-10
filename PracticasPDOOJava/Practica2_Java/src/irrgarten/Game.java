@@ -82,7 +82,7 @@ public class Game {
      * Configura el laberinto añadiendo monstruos.
      * Los monstruos se guardan también en el contendor de esta clase.
      */
-     void configureLabyrinth() {
+    private void configureLabyrinth() {
         // Crear algunos monstruos con valores aleatorios razonables
         for (int i = 0; i < 3; i++) {
             Monster m = new Monster("M" + i, Dice.randomIntelligence(), Dice.randomStrength());
@@ -97,7 +97,7 @@ public class Game {
      /**
       * Pasa el turno al siguiente jugador.
       */
-    void nextPlayer() {
+    private void nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) %players.size();
     }
     
@@ -108,19 +108,19 @@ public class Game {
         throw new UnsupportedOperationException();
     }
     
-    Directions actualDirection(Directions preferredDirection) {
+    private Directions actualDirection(Directions preferredDirection) {
         throw new UnsupportedOperationException();
     }
     
-    GameCharacter combat(Monster monster) {
+    private GameCharacter combat(Monster monster) {
         throw new UnsupportedOperationException();
     }
     
-    void manageReward(GameCharacter winner) {
+    private void manageReward(GameCharacter winner) {
         throw new UnsupportedOperationException();
     }
     
-    void manageResurrection(){
+    private void manageResurrection(){
         throw new UnsupportedOperationException();
     }
     
@@ -129,11 +129,11 @@ public class Game {
     // MÉTODOS DE LOG 
     // ========================================
     
-    void logPlayerWon() { log += "Jugador ha ganado!\n"; }
-    void logMonsterWon() { log += "Monstruo ha ganado!\n"; }
-    void logResurrected() { log += "Jugador resucitado.\n"; }
-    void logPlayerSkipTurn() { log += "Jugador ha perdido turno (muerto)\n"; }
-    void logPlayerNoOrders() { log += "Jugador no ha recibido ordenes validas\n"; }
-    void lonNoMonster() { log += "No hay monstruo en esta casilla / sin movimiento\n"; }
-    void logRounds(int rounds, int max) { log += "Rondas: " + rounds + " / " + max + "\n"; }
+    private void logPlayerWon() { log += "Jugador ha ganado!\n"; }
+    private void logMonsterWon() { log += "Monstruo ha ganado!\n"; }
+    private void logResurrected() { log += "Jugador resucitado.\n"; }
+    private void logPlayerSkipTurn() { log += "Jugador ha perdido turno (muerto)\n"; }
+    private void logPlayerNoOrders() { log += "Jugador no ha recibido ordenes validas\n"; }
+    private void lonNoMonster() { log += "No hay monstruo en esta casilla / sin movimiento\n"; }
+    private void logRounds(int rounds, int max) { log += "Rondas: " + rounds + " / " + max + "\n"; }
 }

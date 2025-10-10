@@ -187,7 +187,7 @@ public class Labyrinth {
         }
     }
     
-    public int[] randomEmptyPos() {
+    private int[] randomEmptyPos() {
         while(true) {
             int r = Dice.randomPos(nRows);
             int c = Dice.randomPos(nCols);

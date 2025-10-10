@@ -15,7 +15,7 @@ public class Monster {
     // ===============================
     
     // Salud inicial por defecto para todos los monstruos.
-    public static final int INITIAL_HEALTH = 5;
+    private static final int INITIAL_HEALTH = 5;
     
     // ===============================
     // ATRIBUTOS DE INSTANCIA
@@ -86,7 +86,7 @@ public class Monster {
     /**
      * Resta un punto de salud al monstruo.
      */
-    public void gotWounded() { health--; }
+    private void gotWounded() { health--; }
     
     // ======================================
     // REPRESENTACIÓN TEXTUAL

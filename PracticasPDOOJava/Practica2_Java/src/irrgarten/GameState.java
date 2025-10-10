@@ -12,7 +12,7 @@ public class GameState {
     private final String labyrinth; // Representacion del laberinto.
     private final String players;   // Representacion de los jugadores.
     private final String monsters; // Representacion de los monstruos.
-    private final int currentPlayer; // Indice del jugador actual.
+    private int currentPlayer; // Indice del jugador actual.
     private final boolean winner; // Ganador?
     private final String log; // Mensajes recientes.
 

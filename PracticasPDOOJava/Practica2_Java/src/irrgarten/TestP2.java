@@ -31,7 +31,6 @@ public class TestP2 {
         System.out.println("¿Está muerto?: " + player.dead());
         System.out.printf("Ataque (sin armas): %.2f%n", player.attack());
         player.setPos(1, 1);
-        player.gotWounded();
         System.out.println("Jugador herido una vez: " + player);
         player.resurrect();
         System.out.println("Jugador resucitado: " + player);

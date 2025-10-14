@@ -195,7 +195,7 @@ public class Player {
     /**
      * Resta un punto de salud al jugador.
      */
-    public void gotWounded() {
+    private void gotWounded() {
         health--;
     }
     

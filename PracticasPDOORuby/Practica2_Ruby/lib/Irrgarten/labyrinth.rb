@@ -21,7 +21,7 @@ module Irrgarten
 
       @monsters = Array.new(n_rows) { Array.new(n_cols) }
       @players = Array.new(n_rows) { Array.new(n_cols) }
-      @labyrinth = Array.new(n_rows) { Array.new(c_cols, EMPTY_CHAR) }
+      @labyrinth = Array.new(n_rows) { Array.new(n_cols, EMPTY_CHAR) }
       @labyrinth[exit_row][exit_col] = EXIT_CHAR
     end
 
@@ -41,6 +41,7 @@ module Irrgarten
       end
     end
 
+    private
     def pos_ok?(row, col)
       row.between?(0, @n_rows - 1) && col.between?(0, @n_cols - 1)
     end

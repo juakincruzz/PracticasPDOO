@@ -29,7 +29,7 @@ monster.got_wounded
 monster.got_wounded
 puts "El monstruo ha sido herido dos veces: #{monster}"
 puts "Ataque del monstruo: #{monster.attack.round(2)}" # Valor aleatorio
-monster.setPos(3, 4)
+monster.set_pos(3, 4)
 puts "Posición del monstruo actualizada: #{monster}"
 
 #Pruebo la clase jugador
@@ -79,7 +79,7 @@ puts "--- Laberinto con Monstruo en (2,2) ---"
 puts labyrinth.to_s
 puts
 puts "Posición (2,2) está vacía? #{labyrinth.empty_pos?(2, 2)}" # false
-puts "Posición (2,2) es de monstruo? #{labyrinth.monster_pos  (2, 2)}" # true
+puts "Posición (2,2) es de monstruo? #{labyrinth.monster_pos(2, 2)}" # true
 random_pos = labyrinth.random_empty_pos
 puts "Posición vacía aleatoria generada: #{random_pos}"
 puts

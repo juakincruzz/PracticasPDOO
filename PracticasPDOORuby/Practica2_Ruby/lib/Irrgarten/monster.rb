@@ -25,7 +25,7 @@ module Irrgarten
       raise NotImplementedError, "P3"
     end
 
-    def setPos(row, col)
+    def set_pos(row, col)
       @row = row.to_i
       @col = col.to_i
     end

@@ -13,6 +13,7 @@ module Irrgarten
     ROW = 0
     COL = 1
 
+    # --- Métodos públicos ---
     def initialize(n_rows, n_cols, exit_row, exit_col)
       @n_rows = n_rows
       @n_cols = n_cols
@@ -34,14 +35,24 @@ module Irrgarten
     end
 
     def add_monster(row, col, monster)
-      if pos_ok(row, col) && empty_pos(row, col)
+      if pos_ok?(row, col) && empty_pos?(row, col)
         @labyrinth[row][col] = MONSTER_CHAR
         @monsters[row][col] = monster
         monster.set_pos(row, col)
       end
     end
 
-    private
+    # ======================================================
+    # P3 - Métodos públicos a implementar
+    # ======================================================
+    def spread_player(players) = raise NotImplementedError, "P3"
+    def put_player(direction, player) = raise NotImplementedError, "P3"
+    def add_block(orientation, start_row, start_col, length) = raise NotImplementedError, "P3"
+    def valid_moves(row, col) = raise NotImplementedError, "P3"
+
+
+    # --- Métodos privados ---
+
     def pos_ok?(row, col)
       row.between?(0, @n_rows - 1) && col.between?(0, @n_cols - 1)
     end
@@ -90,13 +101,12 @@ module Irrgarten
       end
     end
 
-    # ======================================================
-    # P3
-    # ======================================================
-    def spread_player(players) = raise NotImplementedError, "P3"
-    def put_player(direction, player) = raise NotImplementedError, "P3"
-    def addBlock(orientation, start_row, start_col, length) = raise NotImplementedError, "P3"
-    def valid_moves(row, col) = raise NotImplementedError, "P3"
+    # ================================================
+    # P3 - Métodos privados a implementar
+    # ================================================
+    def put_player_2d(old_row, old_col, row, col, player) = raise NotImplementedError, "P3"
+
+
   end
 end
 

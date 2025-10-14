@@ -1,10 +1,21 @@
 # frozen_string_literal: true
 module Irrgarten
   class Monster
+    # --- Constantes y Atributos de Lectura ---
     INITIAL_HEALTH = 5
 
     attr_reader :row, :col
 
+    # ======================================================
+    # MÉTODOS PÚBLICOS
+    # ======================================================
+
+    # Constructor
+    # @param name Nombre del monstruo
+    # @param intelligence Nivel de inteligencia del monstruo
+    # @param strength Nivel de fuerza del monstruo
+    # @param health Nivel de salud del monstruo (por defecto INITIAL_HEALTH)
+    # @return Objeto de la clase Monster
     def initialize(name, intelligence, strength, health = INITIAL_HEALTH)
       @name = name.to_s
       @intelligence = intelligence.to_f
@@ -13,29 +24,48 @@ module Irrgarten
       @row = @col = nil
     end
 
+    # Indica si el monstruo está muerto
+    # @return true si el monstruo está muerto (salud <= 0), false en caso contrario
     def dead?
       @health <= 0
     end
 
+    # Calcula el ataque del monstruo (fuerza + dado de intensidad)
+    # @return Valor del ataque del monstruo
     def attack
       Dice.intensity(@strength)
     end
 
-    def defend(received_attack)
-      raise NotImplementedError, "P3"
-    end
-
+    # Establece la posición del monstruo en el laberinto
+    # @param row Fila de la posición
+    # @param col Columna de la posición
+    # @return Nada (modifica el estado del monstruo)
     def set_pos(row, col)
       @row = row.to_i
       @col = col.to_i
     end
 
-    def got_wounded
-      @health -= 1
-    end
-
+    # Representación en String del monstruo
+    # @return String con la representación del monstruo
     def to_s
       "Monster{name:'#{@name}', int:'#{@intelligence}', str:'#{@strength}', hp:'#{@health}, pos: (#{@row}, #{@col})}"
+    end
+
+    # ======================================================
+    # P3 - Métodos públicos a implementar
+    def defend(received_attack) = raise NotImplementedError, "P3"
+
+
+
+    # ======================================================
+    # MÉTODOS PRIVADOS
+    # =====================================================
+    private
+
+    # El monstruo recibe una herida (pierde 1 punto de salud)
+    # @return Nada (modifica el estado del monstruo)
+    def got_wounded
+      @health -= 1
     end
   end
 end

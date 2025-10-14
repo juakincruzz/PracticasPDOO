@@ -86,7 +86,7 @@ public class Monster {
     /**
      * Resta un punto de salud al monstruo.
      */
-    private void gotWounded() { health--; }
+    public void gotWounded() { health--; }
     
     // ======================================
     // REPRESENTACIÓN TEXTUAL

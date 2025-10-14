@@ -90,5 +90,5 @@ public class Monster {
     /**
      * Resta un punto de salud al monstruo.
      */
-    public void gotWounded() { health--; }
+    private void gotWounded() { health--; }
 }

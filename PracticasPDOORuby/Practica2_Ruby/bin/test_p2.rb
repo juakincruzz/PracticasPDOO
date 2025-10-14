@@ -33,7 +33,6 @@ puts "Jugador recién creado: #{player}"
 puts "Está muerto? #{player.dead?}"
 puts "Ataque (sin armas): #{player.attack.round(2)}"
 player.set_pos(1, 1)
-player.got_wounded
 puts "Jugador herido una vez: #{player}"
 player.resurrect
 puts "Jugador resucitado: #{player}"

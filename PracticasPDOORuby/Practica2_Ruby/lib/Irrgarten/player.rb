@@ -65,12 +65,6 @@ module Irrgarten
       manage_hit(received_attack)
     end
 
-    # El jugador ha sido herido (pierde 1 punto de salud)
-    # @return Nada (modifica el estado del jugador)
-    def got_wounded
-      @health -= 1
-    end
-
     # Representación en cadena del jugador
     # @return Cadena con la información del jugador
     def to_s
@@ -128,6 +122,12 @@ module Irrgarten
     # @return Nuevo objeto de la clase Shield
     def new_shield
       Shield.new(Dice.shields_power, Dice.uses_left)
+    end
+
+    # El jugador ha sido herido (pierde 1 punto de salud)
+    # @return Nada (modifica el estado del jugador)
+    def got_wounded
+      @health -= 1
     end
 
     # ======================================================

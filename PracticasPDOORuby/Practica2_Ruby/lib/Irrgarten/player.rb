@@ -72,7 +72,7 @@ module Irrgarten
     end
 
     def sum_shields
-      @shields.sum {|s| s.defend}
+      @shields.sum {|s| s.protect}
     end
 
     # --- P3: Se dejan en blanco porque son P3 ---

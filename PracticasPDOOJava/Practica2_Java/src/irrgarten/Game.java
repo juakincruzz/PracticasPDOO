@@ -18,6 +18,10 @@ public class Game {
     private final ArrayList<Monster> monsters = new ArrayList<>();
     private final Labyrinth labyrinth;
     
+    // =================================================
+    // MÉTODOS PÚBLICOS
+    // =================================================
+    
     /**
      * Crea una partida con {@code nplayers} jugadores. Decide quién empieza, 
      * crea el laberinto y realiza una confifuración mínima (colocar salida y monstruos).
@@ -80,6 +84,17 @@ public class Game {
         return new GameState(labTxt, ps.toString(), ms.toString(), currentPlayerIndex, finished(), log);
     }
     
+    // =========================================
+    // P3 - Métodos públicos a implementar
+    // =========================================
+     public boolean nextStep(Directions preferredDirection) { throw new UnsupportedOperationException(); }
+    
+     
+     
+     // ========================================
+     // MÉTODOS PRIVADOS
+     // ========================================
+     
     /**
      * Configura el laberinto añadiendo monstruos.
      * Los monstruos se guardan también en el contendor de esta clase.
@@ -103,34 +118,7 @@ public class Game {
         currentPlayerIndex = (currentPlayerIndex + 1) %players.size();
     }
     
-    // ========================================
-    // P3
-    // ========================================
-    public boolean nextStep(Directions preferredDirection) {
-        throw new UnsupportedOperationException();
-    }
-    
-    private Directions actualDirection(Directions preferredDirection) {
-        throw new UnsupportedOperationException();
-    }
-    
-    private GameCharacter combat(Monster monster) {
-        throw new UnsupportedOperationException();
-    }
-    
-    private void manageReward(GameCharacter winner) {
-        throw new UnsupportedOperationException();
-    }
-    
-    private void manageResurrection(){
-        throw new UnsupportedOperationException();
-    }
-    
-    
-    // ========================================
-    // MÉTODOS DE LOG 
-    // ========================================
-    
+    // Métodos de log
     private void logPlayerWon() { log += "Jugador ha ganado!\n"; }
     private void logMonsterWon() { log += "Monstruo ha ganado!\n"; }
     private void logResurrected() { log += "Jugador resucitado.\n"; }
@@ -138,4 +126,12 @@ public class Game {
     private void logPlayerNoOrders() { log += "Jugador no ha recibido ordenes validas\n"; }
     private void lonNoMonster() { log += "No hay monstruo en esta casilla / sin movimiento\n"; }
     private void logRounds(int rounds, int max) { log += "Rondas: " + rounds + " / " + max + "\n"; }
+    
+    // ========================================
+    // P3 - Métodos privados a implementar
+    // ========================================
+    private Directions actualDirection(Directions preferredDirection) { throw new UnsupportedOperationException(); }
+    private GameCharacter combat(Monster monster) { throw new UnsupportedOperationException(); }
+    private void manageReward(GameCharacter winner) { throw new UnsupportedOperationException(); }
+    private void manageResurrection(){ throw new UnsupportedOperationException(); }
 }

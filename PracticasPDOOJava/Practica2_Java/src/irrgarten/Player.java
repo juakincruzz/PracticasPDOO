@@ -33,6 +33,10 @@ public class Player {
     private ArrayList<Weapon> weapons = new ArrayList();
     private ArrayList<Shield> shields = new ArrayList();
     
+    // ===============================================
+    // MÉTODOS PÚBLICOS
+    // ===============================================
+    
     /**
      * Constructor
      * @param number
@@ -49,9 +53,19 @@ public class Player {
         this.name = "Player #" + number;
     }
     
-    // ==================================
-    // MÉTODOS CONSULTORES
-    // ==================================
+    /**
+     * Restaura al jugador al estado inicial.
+     * <ul>
+     *          <li> Vacía armas y escudos. </li>
+     *          <li> Reinicia salud e impactos consecutivos. </li>
+     * </ul>
+     */
+    public void resurrect() {
+        weapons.clear();
+        shields.clear();
+        health = INITIAL_HEALTH;
+        consecutiveHits = 0;
+    }
 
     /**
      * 
@@ -77,24 +91,6 @@ public class Player {
         return number;
     }
     
-    
-     // ==================================
-    // MÉTODOS DE CONTROL DE ESTADO
-    // ==================================
-    /**
-     * Restaura al jugador al estado inicial.
-     * <ul>
-     *          <li> Vacía armas y escudos. </li>
-     *          <li> Reinicia salud e impactos consecutivos. </li>
-     * </ul>
-     */
-    public void resurrect() {
-        weapons.clear();
-        shields.clear();
-        health = INITIAL_HEALTH;
-        consecutiveHits = 0;
-    }
-    
     /**
      * Cambia la posicion del jugador dentro del laberinto.
      * @param row
@@ -113,9 +109,6 @@ public class Player {
        return health <= 0;
     }
     
-    // ==================================
-    // COMBATE
-    // ==================================
     /**
      * Calucla la potencia de ataque del jugador.
      * <p> La fórmula básica es {@code strength + sumWeapons()} </p>
@@ -135,6 +128,23 @@ public class Player {
         throw new UnsupportedOperationException();
     }
     
+    @Override
+    public String toString() {
+        return "Player{" + "name= " + name + ", number= " + number + ", intelligence=" + intelligence + ", strength= " + strength + ", health= " + health + 
+                ", row= " + row + ", col= " + col + ", consecutiveHits= " + consecutiveHits + ", weapons= " + weapons + ", shields= " + shields + '}';
+    }
+    
+    // ==================================
+    // P3 - Métodos públicos a implementar
+    // ==================================
+    public Directions move(Directions direction, Directions[] validMoves){ throw new UnsupportedOperationException(); }
+    public void receiveReward() { throw new UnsupportedOperationException(); }
+    
+    
+    
+    // ==========================================================
+    // MÉTODOS PRIVADOS
+    // ==========================================================
     /**
      * Suma la potencia de todas las armas equipadas (consumiendo sus usos)
      * @return suma total de ataque de armas activas
@@ -189,9 +199,6 @@ public class Player {
         health--;
     }
     
-    // ==================================
-    // EQUIPAMIENTO
-    // ==================================
     /**
      * Genera un arma nueva con valores aleatorios dados por {@link Dice}.
      * @return  nueva instancia de {@link Weapon}
@@ -208,59 +215,10 @@ public class Player {
         return new Shield(Dice.shieldPower(), Dice.usesLeft());
     }
     
-    /**
-     * Añade un arma al inventario del jugador.
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     * @param w arma a añadir
-     */
-    private void receiveWeapon(Weapon w) {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * Añade un escudo al inventario del jugador.
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     * @param s escudo a añadir
-     */
-    private void receiveShield(Shield s) {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * Recibe una recompensa tras un combate ganado.
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     */
-    public void receiveReward() {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * Gestiona el impacto recibido tras un combate ganado.
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     * @param receivedAttack ataque recibido
-     * @return true si el jugador sobrevive, false en caso contrario
-     */
-    private boolean manageHit(float receivedAttack) {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * Movimiento del jugador
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     * @param direction         dirección preferida
-     * @param validMoves     movimientos válidos posibles
-     * @return  dirección final seleccionada
-     */
-    public Directions move(Directions direction, Directions[] validMoves){
-        throw new UnsupportedOperationException();
-    }
-    
-    // ==================================
-    // REPRESENTACIÓN TEXTUAL
-    // ==================================
-    @Override
-    public String toString() {
-        return "Player{" + "name= " + name + ", number= " + number + ", intelligence=" + intelligence + ", strength= " + strength + ", health= " + health + 
-                ", row= " + row + ", col= " + col + ", consecutiveHits= " + consecutiveHits + ", weapons= " + weapons + ", shields= " + shields + '}';
-    }
+    // =========================================
+    // P3 - Métodos privados a implementar
+    // =========================================
+    private void receiveWeapon(Weapon w) { throw new UnsupportedOperationException(); }
+    private void receiveShield(Shield s) { throw new UnsupportedOperationException(); }
+    private boolean manageHit(float receivedAttack) { throw new UnsupportedOperationException(); }
 }

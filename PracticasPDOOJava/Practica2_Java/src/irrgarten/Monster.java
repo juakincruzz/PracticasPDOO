@@ -24,10 +24,9 @@ public class Monster {
     private float intelligence, strength, health;
     private int row = -1, col = -1; // No colocado inicialmente.
     
-    // ===============================
-    // CONSTRUCTOR
-    // ===============================
-    
+    // =================================
+    // MÉTODOS PÚBLICOS
+    // =================================
     /**
      * Crea un nuevo monstruo sin colocar en el laberinto.
      * <p> 
@@ -64,16 +63,6 @@ public class Monster {
     }
     
     /**
-     * Gestiona la defensa del monstruo frente a un ataque recibido.
-     * <p> En P2 no la implemento, la implemento en P3 </p>
-     * @param receivedAttack
-     * @return 
-     */
-    public boolean defend(float receivedAttack){
-       throw new UnsupportedOperationException(); 
-    }
-    
-    /**
      * Cambia la posición del monstruo en el laberinto.
      * @param row fila en la que se colocará
      * @param col columna en la que se colocará
@@ -83,16 +72,23 @@ public class Monster {
         this.col = col;
     }
     
-    /**
-     * Resta un punto de salud al monstruo.
-     */
-    public void gotWounded() { health--; }
-    
-    // ======================================
-    // REPRESENTACIÓN TEXTUAL
-    // ======================================
     @Override
     public String toString() { 
         return "Monster{" + "name= " + name + ", intelligence= " + intelligence + ", strength= " + strength + ", health= " + health + ", row= " + row + ", col= " + col + '}';
     }
+    
+    // ======================================
+    // P3 - Métodos públicos a implementar
+    // ======================================
+    public boolean defend(float receivedAttack){ throw new UnsupportedOperationException(); }
+    
+    
+    // ======================================
+    // MÉTODOS PRIVADOS
+    // ======================================
+    
+    /**
+     * Resta un punto de salud al monstruo.
+     */
+    public void gotWounded() { health--; }
 }

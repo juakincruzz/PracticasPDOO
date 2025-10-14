@@ -33,6 +33,10 @@ public class Labyrinth {
     private final Monster[][] monsters;
     private final Player[][] players;
     private final char[][] labyrinth;
+    
+    // ===============================
+    // MÉTODOS PÚBLICOS
+    // ===============================
 
     /**
      * Crea el laberinto e inicializa todas las celdas como vacías ('-'),
@@ -60,10 +64,6 @@ public class Labyrinth {
         labyrinth[exitRow][exitCol] = EXIT_CHAR;
     }
     
-    // =============================
-    // MÉTODOS A IMPLEMENTAR EN P2
-    // =============================´T
-    
     /**
      * @return {@code true} si hay un jugador en la casilla de salida.
      */
@@ -84,8 +84,7 @@ public class Labyrinth {
         
         return sb.toString();
     }
-
-    
+ 
     /**
      * Añade un monstruo si la posición es válida y está vacía.
      * Marca la celda con 'M' y fija su posición.
@@ -101,6 +100,35 @@ public class Labyrinth {
             monster.setPos(row, col);
         }
     }
+    
+    /**
+     * Este método se mantiene público, desviándose del UML original, por decisión de disenio
+     * para permitir una configuración aleatoria del tablero desde la clase Game. Esta decisión 
+     * fue consultada y aprobada por la profesora.
+     * @return Array de dos enteros con la fila y columna de una casilla vacía.
+     */
+    public int[] randomEmptyPos() {
+        while(true) {
+            int r = Dice.randomPos(nRows);
+            int c = Dice.randomPos(nCols);
+            
+            if(emptyPos(r, c)) return new int[]{r, c};
+        }
+    }
+    
+    // ==============================
+    // P3 - Métodos públicos a implementar
+    // ==============================
+    public ArrayList<Directions> validMoves(int row, int col) { throw new UnsupportedOperationException(); }
+    public void addBlock(Orientation orientation, int startRow, int startCol, int length) { throw new UnsupportedOperationException(); }
+    public Monster putPlayer(Directions direction, Player player) { throw new UnsupportedOperationException(); }
+    public void spreadPlayers(ArrayList<Player> players) { throw new UnsupportedOperationException(); }
+    
+    
+    
+    // ============================
+    // MÉTODOS PRIVADOS
+    // ============================
     
     /**
      * 
@@ -197,59 +225,8 @@ public class Labyrinth {
         }
     }
     
-    public int[] randomEmptyPos() {
-        while(true) {
-            int r = Dice.randomPos(nRows);
-            int c = Dice.randomPos(nCols);
-            
-            if(emptyPos(r, c)) return new int[]{r, c};
-        }
-    }
-    
     // ===========================================
-    // P3
+    // P3 - Métodos privados a implementar
     // ===========================================
-    
-    /**
-     * 
-     * @param row
-     * @param col
-     * @return 
-     */
-    public ArrayList<Directions> validMoves(int row, int col) {
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
-     * 
-     * @param orientation
-     * @param startRow
-     * @param startCol
-     * @param length 
-     */
-    public void addBlock(Orientation orientation, int startRow, int startCol, int length) {
-        throw new UnsupportedOperationException(); 
-    }
-    
-    /**
-     * 
-     * @param direction
-     * @param player
-     * @return 
-     */
-    public Monster putPlayer(Directions direction, Player player) {
-        throw new UnsupportedOperationException(); 
-    }
-    
-    /**
-     * 
-     * @param players 
-     */
-    public void spreadPlayers(ArrayList<Player> players) {
-        throw new UnsupportedOperationException(); 
-    }
-    
-    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
-        throw new UnsupportedOperationException();
-    }
+    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) { throw new UnsupportedOperationException(); }
 }

@@ -73,8 +73,18 @@ public class Labyrinth {
 
     @Override
     public String toString() {
-        return "Labyrinth{" + "nRows=" + nRows + ", nCols=" + nCols + ", exitRow=" + exitRow + ", exitCol=" + exitCol + ", monsters=" + monsters + ", players=" + players + ", labyrinth=" + labyrinth + '}';
+        StringBuilder sb = new StringBuilder();
+        
+        for(int i = 0; i < nRows; i++) {
+            for(int j = 0; j < nCols; j++)
+                sb.append(labyrinth[i][j]).append("\t");
+            
+            sb.append("\n");
+        }
+        
+        return sb.toString();
     }
+
     
     /**
      * Añade un monstruo si la posición es válida y está vacía.

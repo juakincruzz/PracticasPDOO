@@ -15,7 +15,7 @@ public class TestP2 {
         System.out.println("========================================");
         
         // Creación de un monstruo
-        Monster monster = new Monster("Drácula", 8.5f, 9.0f);
+        Monster monster = new Monster("M1", 8.5f, 9.0f);
         System.out.println("Monstruo recién creado: " + monster);
 
         // Pruebas de estado
@@ -60,11 +60,9 @@ public class TestP2 {
         System.out.println("========================================");
         
         // Creación de un laberinto
-        Labyrinth lab = new Labyrinth(5, 6, 4, 5); // 5x6 con salida en (4,5)
+        Labyrinth labyrinth = new Labyrinth(5, 6, 4, 5); // 5x6 con salida en (4,5)
         System.out.println("--- Laberinto Inicial ---");
-        // El toString() por defecto de Java para arrays anidados no es visual,
-        // tendrías que implementarlo de forma personalizada si quieres verlo como en Ruby.
-        // System.out.println(lab); // Usará el toString() que implementaste.
+        labyrinth.toString();
         
         // Pruebas de métodos (los métodos de consulta son privados en tu versión Java)
         // System.out.println("¿Hay ganador?: " + lab.haveAWinner()); // haveAWinner es público
@@ -72,8 +70,8 @@ public class TestP2 {
         
         // Añadir un monstruo
         System.out.println("Añadiendo monstruo a una posición aleatoria...");
-        int[] randomPos = lab.randomEmptyPos();
-        lab.addMonster(randomPos[Labyrinth.ROW], randomPos[Labyrinth.COL], monster);
+        int[] randomPos = labyrinth.randomEmptyPos();
+        labyrinth.addMonster(randomPos[Labyrinth.ROW], randomPos[Labyrinth.COL], monster);
         System.out.println("Monstruo añadido en " + Arrays.toString(randomPos));
         System.out.println();
         

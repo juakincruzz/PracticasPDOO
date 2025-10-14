@@ -32,6 +32,8 @@ public class Game {
             players.add(new Player(number, intel, str));
         }
         
+        this.log = "";
+        
         // 2) Quien empieza
         currentPlayerIndex = Dice.whoStarts(nplayers);
         

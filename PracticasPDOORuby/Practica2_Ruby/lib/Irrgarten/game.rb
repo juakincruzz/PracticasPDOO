@@ -26,6 +26,9 @@ module Irrgarten
 
       # Llamada a un método privado para la configuración inicial
       configure_labyrinth
+
+      # Distribuir jugadores en el laberinto
+      # @labyrinth.spread_player(@players)
     end
 
     # Determina si la partida ha finalizado comprobando si hay un ganador en el laberinto.
@@ -107,7 +110,7 @@ module Irrgarten
     def actual_direction(preferred_direction) = raise NotImplementedError, "P3"
     def combat(monster) = raise NotImplementedError, "P3"
     def manage_reward(winner) = raise NotImplementedError, "P3"
-    def manage_resurreection = raise NotImplementedError, "P3"
+    def manage_resurrection = raise NotImplementedError, "P3"
   end
 end
 

@@ -66,8 +66,6 @@ module Irrgarten
         pos = @labyrinth.random_empty_pos
         @labyrinth.add_monster(pos[Labyrinth::ROW], pos[Labyrinth::COL], monster)
         @monsters << monster
-
-        # Revisar que la posición ya no haya sido ocupada anteriormente por otro monstruo **HACER**
       end
     end
 

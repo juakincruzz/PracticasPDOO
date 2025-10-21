@@ -1,6 +1,7 @@
 package irrgarten;
 
 import java.util.ArrayList;
+import java.util.Iterator; // Nueva implementaciónń
 
 /**
  * Representa un jugador dentro del laberinto
@@ -125,7 +126,8 @@ public class Player {
      * @return 
      */
     public boolean defend(float receivedAttack) {
-        throw new UnsupportedOperationException();
+        // Diagrama 1.1: manageHit(received attack)
+        return manageHit(receivedAttack);
     }
     
     @Override
@@ -137,8 +139,58 @@ public class Player {
     // ==================================
     // P3 - Métodos públicos a implementar
     // ==================================
-    public Directions move(Directions direction, Directions[] validMoves){ throw new UnsupportedOperationException(); }
-    public void receiveReward() { throw new UnsupportedOperationException(); }
+    /**
+     * Decide la dirección final del movimiento del jugador
+     * <p>
+     * Si la dirección preferida es válida, se devuelve.
+     * Si no lo es, pero hay movimientos válidos, se devuelve el primero de la lista de no válidos
+     * Si no hay movimientos válidos, se devuelve la preferida (aunque sea inválida)
+     * </p>
+     * @param direction Dirección preferida
+     * @param validMoves Array de direcciones válidas ñ
+     * @return Dirección final
+     */
+    public Directions move(Directions direction, Directions[] validMoves){ 
+        int size = validMoves.length; // Diagrama 1.1: size()
+        
+        // Diagrama 1.2: contains(directions)
+        boolean contained = false; 
+        for (Directions d : validMoves) {
+            if (d == direction) {
+                contained = true;
+                break;
+            }
+        }
+        
+        
+    }
+    
+    /**
+     * Recibe las recompensas (armas, escudos, salud) al ganar un combate. 
+     * Delega en Dice para obtener las cantidades y en los métodos privados 
+     * receiveWeapon y receiveShield para gestionarlas
+     */
+    public void receiveReward() { 
+        int wReward = Dice.weaponsReward(); // Diagrama 1.1: weaponsReward
+        int sReward = Dice.shieldsReward(); // Diagrama 1.2: shieldsReward
+        
+        // Diagrama loop: (1, wReward)
+        for (int i = 1; i <= wReward; i++){
+            Weapon wnew = newWeapon(); // Diagrama 1.3: newWeapon()
+            receiveWeapon(wnew); // Diagrama 1.4: receiveWeapon(w: Weapon = wnew)
+        }
+        
+        // Diagrama loop: (1, sReward)
+        for (int i = 1; i <= sReward; i++){
+            Shield snew = newShield(); // Diagrama 1.5: newShield()
+            receiveShield(snew); // Diagrama 1.6: receiveShield(s: Shield = snew)
+        }
+        
+        int extraHealth = Dice.healthReward(); // Diagrama 1.7: healthReward
+        
+        // Diagrama health += extraHealth
+        health += extraHealth;
+    }
     
     
     
@@ -218,7 +270,98 @@ public class Player {
     // =========================================
     // P3 - Métodos privados a implementar
     // =========================================
-    private void receiveWeapon(Weapon w) { throw new UnsupportedOperationException(); }
-    private void receiveShield(Shield s) { throw new UnsupportedOperationException(); }
-    private boolean manageHit(float receivedAttack) { throw new UnsupportedOperationException(); }
+    /**
+     *  Gestiona la recepción de un arma.
+     * <p>
+     * Se itera sobre las armas actuales, descartando (eliminando) las que 
+     * ya no tengan usos. Si tras la limpia hay espacio (< MAX_WEAPONS),
+     * se aniade la nueva arma.
+     * </p>
+     * @param w Arma a recibir
+     */
+    private void receiveWeapon(Weapon w) {
+        // Diagrama: loop for all
+        Iterator<Weapon> it = weapons.iterator();
+        
+        while (it.hasNext()){
+            Weapon wi = it.next(); // Diagrama 1.1: next()
+            
+            // Diagrama opt [discard]
+            if (wi.discard()) { // Diagrama 1.2: discard()
+                 it.remove(); // Diagrama 1.3: remove(wi)
+            }
+        }
+        
+        // Diagrama 1.4: int size()
+        int size = weapons.size();
+        
+        // Diagrama opt [size < MAX_WEAPONS]
+        if(size < MAX_WEAPONS){
+            weapons.add(w); // Diagrama 1.5: add(w)
+        }
+    }
+    
+    /**
+     * Gestiona la recepción de un escudo.
+     * <p> 
+     * Se itera sobre los escudos actuales, descartando (eliminando) los que ya no tengan usos.
+     * Si tras la limpieza hay espacio (<   MAX_SHIELDS), se aniade el nuevo escudo.
+     * </p>
+     * @param s Escudo a recibir. 
+     */
+    private void receiveShield(Shield s) { 
+        // Diagrama: loop [for all]
+        Iterator<Shield> it = shields.iterator();
+        
+        while(it.hasNext()) {
+            Shield si = it.next(); // Diagrama 1.1: next()
+            
+            // Diagrama opt [discard]
+            if(si.discard()){ // Diagrama 1.2: discard()
+                it.remove(); // Diagrama 1.3: remove()
+            }
+        }
+        
+        // Diagrama 1.4: size()
+        int size = shields.size();
+        
+        // Diagrama opt [size < MAX_SHIELDS]
+        if (size < MAX_SHIELDS){
+            shields.add(s); // Diagrama 1.5: add(s)
+        }
+    }
+    
+    /**
+     * Gestiona la lógica de un impacto recibido.
+     * <p>
+     * Compara la defensa del jugador con el ataque. Si es superado, 
+     * recibe danio y acumula impactos. Si resiste, reinicia impactos.
+     * Comprueba si el jugador pierde (por vida o por impactos consecutivos)
+     * </p>
+     * @param receivedAttack Ataque recibido
+     * @return true si el jugador pierde, false si sobrevive
+     */
+    private boolean manageHit(float receivedAttack) { 
+         // Diagrama 1.1.1: defensiveEnergy()
+        float defense = defensiveEnergy();
+        boolean lose = false; // Variable local para gestionar el resultado.
+        
+        // Diagrama alt: [defense < receivedAttack]
+        if (defense < receivedAttack){
+            gotWounded() ; // Diagrama 1.1.2: gotWounded()
+            incConsecutiveHits(); // Diagrama 1.1.3: incConsecutiveHits()
+        } else {
+            resetHits();
+        }
+        
+        // Diagrama alt: [((consecutiveHits == HITS2LOSE) || (dead()))]
+        if ( (consecutiveHits == HITS2LOSE) || (dead()) ) {
+            resetHits(); // Diagrama 1.1.5: resetHits()
+            
+            // Diagrama lose = true
+            lose = true;
+        } 
+        
+        return lose;
+    }
 }

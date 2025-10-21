@@ -10,6 +10,12 @@ import java.util.ArrayList;
 public class Game {
     // Número máximo de rondas
     private static final int MAX_ROUNDS = 10;
+
+    // CONSTANTES DEL LABERINTO (AÑADE ESTO)
+    private static final int ROWS = 6;
+    private static final int COLS = 8;
+    private static final int EXIT_ROW = 0;
+    private static final int EXIT_COL = 7;
     
     private  int currentPlayerIndex;
     private String log;
@@ -29,32 +35,24 @@ public class Game {
      * @param nplayers número de jugadores
      */
     public Game(int nplayers) {
-        // 1) Crear jugadores (ejemplo: letras 'A', 'B', 'C', ...)
+        // 1. Crear jugadores y aniadirlos a la lista.
         for(int i = 0; i < nplayers; i++){
             char number = (char) ('A' + i);
-            float intel = Dice.randomIntelligence();
-            float str = Dice.randomStrength();
-            players.add(new Player(number, intel, str));
+            Player p = new Player(number, Dice.randomIntelligence(), Dice.randomStrength());
+            this.players.add(p);
         }
         
+        // 2. Inicializar el jugador actual
+        this.currentPlayerIndex = Dice.whoStarts(nplayers);
+        this.currentPlayer = this.players.get(this.currentPlayerIndex);
+
+        // 3. Inicializar el resto
+        this.labyrinth = new Labyrinth(ROWS, COLS, EXIT_ROW, EXIT_COL);
         this.log = "";
         
-        // 2) Quien empieza
-        currentPlayerIndex = Dice.whoStarts(nplayers);
-        
-        // 3) Crear laberinto (dimensiones y salida de ejemplo)
-        int rows = 6, cols = 8, exitRow = 0, exitCol = cols - 1;
-        labyrinth = new Labyrinth(rows, cols, exitRow, exitCol);
-        
-        // 4) Configurar laberinto (bloques/monstruos)
-        configureLabyrinth();
-        
-        // 5) Repartir jugadores (en P3; aquí puede no estar implementado)
-        try {
-            labyrinth.spreadPlayers(players);
-        } catch (UnsupportedOperationException ex) {
-            // Nada aún, se completa en P3
-        }
+        // 4. Configurar el tablero
+        this.configureLabyrinth();
+        this.labyrinth.spreadPlayers(this.players);
      }
     
     /**
@@ -94,7 +92,7 @@ public class Game {
      * @return Si el juego ha terminado
      */
      public boolean nextStep(Directions preferredDirection) { 
-         String log = "";
+         log = "";
          
          boolean dead = currentPlayer.dead(); // Diagrama 1.1
          

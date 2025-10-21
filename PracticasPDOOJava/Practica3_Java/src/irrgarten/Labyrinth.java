@@ -119,10 +119,99 @@ public class Labyrinth {
     // ==============================
     // P3 - Métodos públicos a implementar
     // ==============================
-    public ArrayList<Directions> validMoves(int row, int col) { throw new UnsupportedOperationException(); }
-    public void addBlock(Orientation orientation, int startRow, int startCol, int length) { throw new UnsupportedOperationException(); }
-    public Monster putPlayer(Directions direction, Player player) { throw new UnsupportedOperationException(); }
-    public void spreadPlayers(ArrayList<Player> players) { throw new UnsupportedOperationException(); }
+    /**
+     * Devuelve una lista de direcciones válidas desde una casilla.
+     * @param row
+     * @param col
+     * @return Lista de direcciones a las que se puede mover
+     */
+    public ArrayList<Directions> validMoves(int row, int col) { 
+        ArrayList<Directions> output = new ArrayList<>(); // Diagrama 1.1: new
+        
+        // Diagrama opt: [(canStepOn(row + 1, col))]
+        if (canStepOn(row + 1, col)) {
+            output.add(Directions.DOWN); // Diagrama 1.2: add(Directions.DOWN)
+        }
+        
+        // Diagrama opt: [(canStepOn(row - 1, col))]
+        if (canStepOn(row - 1, col)) {
+            output.add(Directions.UP); // Diagrama 1.3: add(Directions.UP)
+        }
+        
+        // Diagrama opt: [(canStepOn(row, col + 1))]
+        if (canStepOn(row, col + 1)) {
+            output.add(Directions.RIGHT); // Diagrama 1.4: add(Directions.RIGHT)
+        }
+        
+        // Diagrama opt: [(canStepOn(row, col - 1))]
+        if (canStepOn(row, col - 1)) {
+            output.add(Directions.LEFT); // Diagrama 1.5: add(Directions.LEFT)
+        }
+        
+        return output; // Diagrama 1.6: output
+    }
+    
+    /**
+     * Aniade un bloque de obstáculos (muros) al laberinto
+     * @param orientation
+     * @param startRow
+     * @param startCol
+     * @param length 
+     */
+    public void addBlock(Orientation orientation, int startRow, int startCol, int length) { 
+        int incRow, incCol;
+        
+        // Diagrama alt: [(orientation == Orientation.VERTICAL)]
+        if (orientation == Orientation.VERTICAL) {
+            incRow = 1;
+            incCol = 0;
+        } else { // HORIZONTAL
+            incRow = 0;
+            incCol = 1;
+        }
+        
+        int row = startRow;
+        int col = startCol;
+        
+        // Diagrama loop: [( (posOK(row, col)) && (emptyPos(row, col)) && (length > 0)
+        while (posOK(row, col) && emptyPos(row, col) && length > 0) {
+            // Diagrama 1.1: set(row, col, BLOCK_CHAR)
+            labyrinth[row][col] = BLOCK_CHAR;
+            length -= 1;
+            row += incRow;
+            col += incCol;
+        }
+    }
+    
+    /**
+     * Mueve un jugador en una dirección
+     * @param direction
+     * @param player
+     * @return El monstruo en la nueva casilla si hay, o null
+     */
+    public Monster putPlayer(Directions direction, Player player) { 
+        int oldRow = player.getRow(); // Diagrama 1.1: getRow()
+        int oldCol = player.getCol(); // Diagrama 1.2: getCol()
+        
+        int[] newPos = dir2Pos(oldRow, oldCol, direction); // Diagrama 1.3: dir2Pos(oldRow, oldCol, direction)
+        
+        Monster monster = putPlayer2D(oldRow, oldCol, newPos[ROW], newPos[COL], player); // Diagrama 1.4: putPlayer2D(oldRow, oldCol, newPos[ROW], newPos[COL], player)
+        
+        return monster; // Diagrama 2: monster
+    }
+    
+    /**
+     * Coloca a los jugadores en casullas vacías aleatorias.
+     * @param players 
+     */
+    public void spreadPlayers(ArrayList<Player> players) { 
+        // Diagrama loop: [for all]
+        for (Player p : players) { // Diagrama 1.1: next()
+            int[] pos = randomEmptyPos(); // Diagrama 1.2: randomEmptyPos()
+            
+            putPlayer2D(-1, -1, pos[ROW], pos[COL], p); // Diagrama 1.3: putPlayer2D(-1, -1, pos[ROW], pos[COL], p)
+        }
+    }
     
     
     
@@ -228,5 +317,48 @@ public class Labyrinth {
     // ===========================================
     // P3 - Métodos privados a implementar
     // ===========================================
-    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) { throw new UnsupportedOperationException(); }
+    /**
+     * Núcleo de la lógica del movimiento. Mueve un jugador de old a new
+     * @param oldRow
+     * @param oldCol
+     * @param row
+     * @param col
+     * @param player
+     * @return 
+     */
+    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) { 
+        Monster output = null; // Diagrama: output = null
+        
+        // Diagrama opt: [canStepOn(row, col)]
+        if (canStepOn(row, col)) {
+            // Diagrama opt: [posOK(oldRow, oldCol)]
+            if (posOK(oldRow, oldCol)) {
+                Player p = players[oldRow][oldCol]; // Diagrama 1.1: get(oldRow, oldCol)
+                
+                // Diagrama opt: [p == player]
+                if (p == player) {
+                    updateOldPos(oldRow, oldCol); // Diagrama 1.2: updateOldPos(oldRow, oldCol)
+                    players[oldRow][oldCol] = null; // Diagrama 1.3: set(oldRow, oldCol, null)
+                }
+            }
+            
+            boolean monsterPos = monsterPos(row, col); // Diagrama 1.4: monsterPos(row, col)
+            
+            // Diagrama alt: [monsterPos]
+            if (monsterPos) {
+                labyrinth[row][col] = COMBAT_CHAR; // Diagrama 1.5: set(row, col, COMBAT_CHAR)
+                
+                output = monsters[row][col]; // Diagrama 1.6: get(row, col)
+            } else {
+                char number = player.getNumber(); // Diagrama 1.7: getNumber()
+                labyrinth[row][col] = number; // Diagrama 1.8: set(row, col, number)
+            }
+            
+            players[row][col] = player; // Diagrama 1.9: set(row, col, player)
+            
+            player.setPos(row, col); // Diagrama 1.10: setPos(row, col)
+        }
+        
+        return output; // Diagrama: output
+    }
 }

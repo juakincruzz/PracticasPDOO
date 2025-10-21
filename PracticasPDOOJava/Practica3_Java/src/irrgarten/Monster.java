@@ -80,7 +80,33 @@ public class Monster {
     // ======================================
     // P3 - Métodos públicos a implementar
     // ======================================
-    public boolean defend(float receivedAttack){ throw new UnsupportedOperationException(); }
+    /**
+     * Gestiona la defensa del monstruo ante un ataque.
+     * <p>
+     * Si el monstruo está vivo, calcula su defensa (con Dice.intensity).
+     * Si el ataque supera a la defensa, recibe danio (gotWounded).
+     * </p>
+     * @param receivedAttack Ataque recibido
+     * @return true si el monstruo muere a causa del ataque o ya estaba muerto,
+     * false en caso contrario.
+     */
+    public boolean defend(float receivedAttack){ 
+        boolean isDead = this.dead(); // Diagrama 1.1: dead()
+        
+        // Diagrama opt: [!isDead]
+        if (!isDead) {
+            float defensiveEnergy = Dice.intensity(intelligence); // Diagrama 1.2: intensity(intelligence)
+            
+            // Diagrama opt: [defensiveEnergy < receivedAttack]
+            if (defensiveEnergy < receivedAttack) {
+                gotWounded(); // Diagrama 1.3: gotWounded()
+                isDead = dead(); // Diagrama 1.4: dead()
+            }
+        }
+        // Devuelve true si estaba muerto o si ha muerto ahora, 
+        // false si ha sobrevivido al golpe
+        return isDead;
+    }
     
     
     // ======================================

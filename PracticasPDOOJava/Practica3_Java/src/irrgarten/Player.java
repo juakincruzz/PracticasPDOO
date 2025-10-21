@@ -162,7 +162,15 @@ public class Player {
             }
         }
         
-        
+        // Diagrama alt: [(size > 0) && (!contained)]
+        if (size > 0 && !contained) {
+            // Diagrama 1.3: get(0)
+            // Diagrama 1.4: firstElement
+            return validMoves[0];
+        } else {
+            // Diagrama 1.5: direction (return)
+            return direction;
+        }
     }
     
     /**

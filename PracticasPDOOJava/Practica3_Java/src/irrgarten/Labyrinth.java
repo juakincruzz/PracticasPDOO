@@ -277,7 +277,8 @@ public class Labyrinth {
      * @return 
      */
     private boolean canStepOn(int row, int col) {
-        return false;
+        return posOK(row, col) 
+                    && (emptyPos(row, col) || monsterPos(row, col) || exitPos(row, col));
     }
     
     /**

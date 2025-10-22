@@ -147,8 +147,55 @@ module Irrgarten
     # ===========================================================
     # P3 - Métodos privados a implementar
     # ===========================================================
-    def actual_direction(preferred_direction) = raise NotImplementedError, "P3"
-    def combat(monster) = raise NotImplementedError, "P3"
+
+    # Determina la dirección real del movimiento.
+    # @param preferred_direction
+    # @return Dirección final (la deseada, o la primera válida si la deseada no es posible)
+    def actual_direction(preferred_direction)
+      current_row = @current_player.row # Diagrama 1.1: getRow()
+      current_col = @current_player.col # Diagrama 1.2: getCol()
+
+      valid_moves = @labyrinth.valid_moves(current_row, current_col) # Diagrama 1.3: validMoves(currentRow, currentCol)
+
+      output = @current_player.move(preferred_direction, valid_moves) # Diagrama 1.4: move(preferredDirection, validMoves)
+
+      output # Diagrama: return output
+    end
+
+    # Realiza un asalto de combate entre el jugador actual y un monstruo
+    # @param monster
+    # @ return Ganador del combate (PLAYER O MONSTER)
+    def combat(monster)
+      rounds = 0
+      winner = GameCharacter::PLAYER
+
+      player_attack = @current_player.attack # Diagrama 1.1: attack()
+
+      lose = monster.defend(player_attack) # Diagrama 1.2: defend(playerAttack)
+
+      # Diagrama loop: [(!lose) && (rounds < MAX_ROUNDS)]
+      while !lose && (rounds < MAX_ROUNDS)
+        winner = GameCharacter::MONSTER
+        rounds += 1
+
+        monster_attack = monster.attack # Diagrama 1.3: attack()
+
+        lose = @curren_player.defend(monster_attack) # Diagrama 1.4: defend(monsterAttack)
+
+        # Diagrama opt: [!lose]
+        unless lose # == if !lose
+          player_attack = @current_player.attack # Diagrama 1.5: attack()
+
+          winner = GameCharacter::PLAYER
+
+          lose = monster.defend(player_attack) # Diagrama 1.6: defend(playerAttack)
+        end
+      end
+
+      log_rounds(rounds, MAX_ROUNDS) # Diagrama 1.7: logRounds(rounds, MAX_ROUNDS)
+
+      winner # Diagrama: return winner
+    end
 
     # Gestiona la recompensa (si gana PLAYER) o el log (si gana MONSTER).
     # @param winner
@@ -162,7 +209,6 @@ module Irrgarten
         log_monster_won # Diagrama 1.3: logMonsterWon()
       end
     end
-
 
     # Gestiona la resurrección del jugador si está muerto al inicio del turno.
     def manage_resurrection

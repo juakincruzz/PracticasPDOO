@@ -156,6 +156,7 @@ public class Game {
       */
     private void nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) %players.size();
+        currentPlayer = players.get(this.currentPlayerIndex);
     }
     
     // Métodos de log

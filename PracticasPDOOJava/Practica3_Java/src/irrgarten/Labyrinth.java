@@ -47,21 +47,56 @@ public class Labyrinth {
      * @param exitRow   fila de la salida
      * @param exitCol    columna de la salida
      */
-    public Labyrinth(int nRows, int nCols, int exitRow, int exitCol) {
+    public Labyrinth(int nRows, int nCols) {
         this.nRows = nRows;
         this.nCols = nCols;
-        this.exitRow = exitRow;
-        this.exitCol = exitCol;
         
-        monsters = new Monster[nRows][nCols];
-        players = new Player[nRows][nCols];
-        labyrinth = new char[nRows][nCols];
+        // Creamos los arrays bidimensionales
+        this.monsters = new Monster[nRows][nCols];
+        this.players = new Player[nRows][nCols];
+        this.labyrinth = new char[nRows][nCols];
         
+        // 1. Inicializar todo a EMPTY_CHAR ('-')
         for (int i = 0; i < nRows; i++)
-            for (int j = 0; j < nCols; j++)
-                labyrinth[i][j] = EMPTY_CHAR;
+            for (int j = 0; j < nCols; j++){
+                this.labyrinth[i][j] = EMPTY_CHAR;
+                this.monsters[i][j] = null; // Aseguro que empiezan vacíos
+                this.players[i][j] = null; // Aseguro que empiezan vacíos
+            }
         
-        labyrinth[exitRow][exitCol] = EXIT_CHAR;
+        // 2. ANIADO MUROS EXTERIORES (BLOCK_CHAR = 'X')
+        // Filas superior e inferior
+        for (int j = 0; j < nCols; j++) {
+            this.labyrinth[0][j] = BLOCK_CHAR; // Primera fila
+            this.labyrinth[nRows - 1][j] = BLOCK_CHAR; // Última fila
+        }
+
+        // Columnas izquierda y derecha (sin sobreescribir)
+        for (int i = 1; i < nRows - 1; i++){
+            this.labyrinth[i][0] = BLOCK_CHAR; // Primera columna
+            this.labyrinth[i][nCols - 1] = BLOCK_CHAR; // Última columna
+        }
+        
+        // 3. ANIADIR MUROS INTERIORES 
+        if (posOK(2, 2) && !(exitRow == 2 && exitCol == 2)) this.labyrinth[2][2] = BLOCK_CHAR;
+        if (posOK(2, 3) && !(exitRow == 2 && exitCol == 3)) this.labyrinth[2][3] = BLOCK_CHAR;
+        if (posOK(3, 2) && !(exitRow == 3 && exitCol == 2)) this.labyrinth[3][2] = BLOCK_CHAR;
+        
+        // 4. GENERAR Y COLOCAR LA SALIDA ALEATORIA INTERNA 
+        // Genera coordenadas aleatorias hasta encontrar una casilla interna que NO sea un muro ('X')
+        int randomExitRow, randomExitCol;
+        
+        do {
+            // Genera fila entre 1 y nRows - 2 (inclusive)
+            randomExitRow = Dice.randomPos(nRows - 2) + 1;
+            // Genera columna entre 1 y nCols - 2 (inclusive)
+            randomExitCol = Dice.randomPos(nCols - 2) + 1;
+        } while (this.labyrinth[randomExitRow][randomExitCol] == BLOCK_CHAR); // Repite si cae en un muro interno
+        
+        // Asignar y colocar la salida
+        this.exitRow = randomExitRow; // Guarda la fila generada
+        this.exitCol = randomExitCol; // Guarda la columna generada
+        this.labyrinth[this.exitRow][this.exitCol] = EXIT_CHAR; // Poner 'E'
     }
     
     /**

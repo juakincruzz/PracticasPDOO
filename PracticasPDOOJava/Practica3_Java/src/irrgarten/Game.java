@@ -14,8 +14,6 @@ public class Game {
     // CONSTANTES DEL LABERINTO (AÑADE ESTO)
     private static final int ROWS = 6;
     private static final int COLS = 8;
-    private static final int EXIT_ROW = 0;
-    private static final int EXIT_COL = 7;
     
     private  int currentPlayerIndex;
     private String log;
@@ -47,7 +45,8 @@ public class Game {
         this.currentPlayer = this.players.get(this.currentPlayerIndex);
 
         // 3. Inicializar el resto
-        this.labyrinth = new Labyrinth(ROWS, COLS, EXIT_ROW, EXIT_COL);
+        this.labyrinth = new Labyrinth(ROWS, COLS);
+        
         this.log = "";
         
         // 4. Configurar el tablero

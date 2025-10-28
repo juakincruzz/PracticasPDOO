@@ -8,7 +8,7 @@ import java.util.Random;
 
 /**
  *
- * @author joaquin
+ * @author Joaquín Cruz Lorenzo
  */
 public final class Dice {
     // Atributos de clase privados.

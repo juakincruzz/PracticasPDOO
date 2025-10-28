@@ -13,7 +13,7 @@ import irrgarten.UI.TextUI;
  * Programa principal que inicia el juego.
  * Su única responsabilidad es instanciar el Modelo, la Vista y el Controlador.
  * Y arrancar el juego.
- * @author Joaquín
+ * @author Joaquín Cruz Lorenzo
  */
 public class Main {
     /**

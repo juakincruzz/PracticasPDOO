@@ -6,7 +6,7 @@ package irrgarten;
 
 /**
  *
- * @author joaquin
+ * @author Joaquín Cruz Lorenzo
  */
 public enum GameCharacter {
     PLAYER, MONSTER

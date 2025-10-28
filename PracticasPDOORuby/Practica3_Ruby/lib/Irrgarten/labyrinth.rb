@@ -27,10 +27,12 @@ module Irrgarten
       @exit_row = exit_row
       @exit_col = exit_col
 
-      @monsters = Array.new(n_rows) { Array.new(n_cols) }
+      @monsters = Array.new(n_rows) { Array.new(n_cols, nil) }
       @players = Array.new(n_rows) { Array.new(n_cols) }
       @labyrinth = Array.new(n_rows) { Array.new(n_cols, EMPTY_CHAR) }
       @labyrinth[exit_row][exit_col] = EXIT_CHAR
+
+      # Aniadir marco de 'X' y aniadirlos en el laberinto aleatoriamente
     end
 
     # Indica si hay un ganador (un jugador en la salida)
@@ -74,11 +76,14 @@ module Irrgarten
 
     # Coloca al jugador / los jugadores en casilla/s vacía/s aleatoria/s.
     # @param players
-    def spread_player(players)
-      # Diagrama loop: [for all]
+    def spread_players(players)
+      # Diagrama: loop [for all]
       players.each do |p| # Diagrama 1.1: next()
-        random_empty_pos # Diagrama 1.2: random_empty_pos()
-        put_player_2d(-1, -1, pos[ROW], pos[COL], p) # Diagrama 1.3: put_player_2d(-1, -1, row, col, player)
+        # Diagrama 1.2: randomEmptyPos() <-- ¡Asegúrate de ASIGNAR el resultado!
+        pos = random_empty_pos
+
+        # Diagrama 1.3: putPlayer2D (con oldRow=-1, oldCol=-1)
+        put_player_2d(-1, -1, pos[ROW], pos[COL], p)
       end
     end
 
@@ -180,7 +185,7 @@ module Irrgarten
     # @param row Fila de la posición a comprobar
     # @param col Columna de la posición a comprobar
     # @return true si la posición tiene un monstruo, false en caso contrario
-    def monster_pos(row, col)
+    def monster_pos?(row, col)
       pos_ok?(row, col) && @labyrinth[row][col] == MONSTER_CHAR
     end
 
@@ -205,7 +210,15 @@ module Irrgarten
     # @param col Columna de la posición a comprobar
     # @return true si se puede pisar la posición, false en caso contrario
     def can_step_on?(row, col)
-      pos_ok?(row, col) && empty_pos?(row, col) || combat_pos?(row, col) || exit_pos?(row, col)
+      if pos_ok?(row,col)
+        if empty_pos?(row, col) || monster_pos?(row, col) || exit_pos?(row,col)
+          true
+        else
+          false
+        end
+      else
+        false
+      end
     end
 
     # Actualiza la posición antigua del jugador en el laberinto
@@ -213,8 +226,16 @@ module Irrgarten
     # @param col Columna de la posición antigua
     # @return Nada (modifica el estado del laberinto)
     def update_old_pos(row, col)
+      # Diagrama: opt [posOK(row, col)] (Implícito en la llamada desde put_player_2d)
+      # Comprobamos si la posición es válida antes de acceder
       if pos_ok?(row, col)
-        @labyrinth[row][col] = combat_pos?(row, col) ? MONSTER_CHAR : EXIT_CHAR
+        # Diagrama: alt [labyrinth[row][col] == COMBAT_CHAR]
+        if @labyrinth[row][col] == COMBAT_CHAR
+          @labyrinth[row][col] = MONSTER_CHAR # De combate pasa a monstruo
+        else
+          # DEBE ser EMPTY_CHAR, no EXIT_CHAR
+          @labyrinth[row][col] = EMPTY_CHAR   # Cualquier otro caso pasa a vacía
+        end
       end
     end
 
@@ -261,7 +282,7 @@ module Irrgarten
           end
         end
 
-        monster_pos = monster_pos(row, col) # Diagrama 1.4: monsterPos(row, col)
+        monster_pos = monster_pos?(row, col) # Diagrama 1.4: monsterPos(row, col)
 
         # Diagrama alt: [monsterPos]
         if monster_pos

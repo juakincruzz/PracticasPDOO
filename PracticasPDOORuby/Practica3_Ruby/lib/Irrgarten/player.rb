@@ -11,7 +11,7 @@ module Irrgarten
     INITIAL_HEALTH = 10
     HITS2LOSE = 3
 
-    attr_reader :row, :col, :name, :name, :intelligence, :strength, :health
+    attr_reader :row, :col, :name, :name, :intelligence, :strength, :health, :number
 
     # ======================================================
     # MÉTODOS PÚBLICOS

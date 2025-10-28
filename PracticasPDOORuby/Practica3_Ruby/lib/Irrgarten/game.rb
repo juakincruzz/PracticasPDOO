@@ -4,11 +4,17 @@ require_relative 'monster'
 require_relative 'labyrinth'
 require_relative 'game_state'
 require_relative 'dice'
+require_relative 'game_character'
 
 module Irrgarten
   class Game
     # --- Constantes y Atributos de Lectura ---
     MAX_ROUNDS = 10
+
+    ROWS = 6       # Basado en tu log de Java
+    COLS = 8       # Basado en tu log de Java
+    EXIT_ROW = 0   # Basado en tu log de Java
+    EXIT_COL = 7   # Basado en tu log de Java
 
     # ===========================================================
     # MÉTODOS PÚBLICOS
@@ -17,18 +23,29 @@ module Irrgarten
     # Constructor
     # @param nplayers Número de jugadores en la partida
     # @return Objeto de la clase Game
+    # Constructor
+    # @param nplayers [Integer] Número de jugadores
     def initialize(nplayers)
-      @players = Array.new(nplayers) { |i| Player.new(i, Dice.random_intelligence, Dice.random_strength) }
-      @monsters = []
-      @log = ""
-      @labyrinth = Labyrinth.new(10, 10, 0, 0)
+      # 1. Crear jugadores
+      @players = []
+      nplayers.times do |i|
+        number = (65 + i).chr # 'A', 'B', ...
+        player = Player.new(number, Dice.random_intelligence, Dice.random_strength)
+        @players << player
+      end
+
+      # 2. INICIALIZAR JUGADOR ACTUAL (¡ESTO ES LO QUE FALTA!)
       @current_player_index = Dice.who_starts(nplayers)
+      @current_player = @players[@current_player_index]
 
-      # Llamada a un método privado para la configuración inicial
+      # 3. Inicializar el resto
+      @monsters = []
+      @labyrinth = Labyrinth.new(ROWS, COLS, EXIT_ROW, EXIT_COL) # Usa las constantes
+      @log = ''
+
+      # 4. Configurar tablero
       configure_labyrinth
-
-      # Distribuir jugadores en el laberinto
-      # @labyrinth.spread_player(@players)
+      @labyrinth.spread_players(@players)
     end
 
     # Determina si la partida ha finalizado comprobando si hay un ganador en el laberinto.
@@ -54,7 +71,7 @@ module Irrgarten
     def next_step(preferred_direction)
       log = ""
 
-      dead = @current_player.is_dead? # Diagrama 1.1: dead()
+      dead = @current_player.dead? # Diagrama 1.1: dead()
 
       # Diagrama alt: [!dead]
       unless dead # == if !dead
@@ -113,6 +130,7 @@ module Irrgarten
     # @return Nada (modifica el estado del juego)
     def next_player
       @current_player_index = (@current_player_index + 1) % @players.length
+      @current_player = @players[@current_player_index]
     end
 
     # Métodos de logging para registrar eventos importantes en el juego.
@@ -180,7 +198,7 @@ module Irrgarten
 
         monster_attack = monster.attack # Diagrama 1.3: attack()
 
-        lose = @curren_player.defend(monster_attack) # Diagrama 1.4: defend(monsterAttack)
+        lose = @current_player.defend(monster_attack) # Diagrama 1.4: defend(monsterAttack)
 
         # Diagrama opt: [!lose]
         unless lose # == if !lose

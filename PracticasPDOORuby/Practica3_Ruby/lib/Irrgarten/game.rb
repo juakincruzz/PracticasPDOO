@@ -11,10 +11,8 @@ module Irrgarten
     # --- Constantes y Atributos de Lectura ---
     MAX_ROUNDS = 10
 
-    ROWS = 6       # Basado en tu log de Java
-    COLS = 8       # Basado en tu log de Java
-    EXIT_ROW = 0   # Basado en tu log de Java
-    EXIT_COL = 7   # Basado en tu log de Java
+    ROWS = 6
+    COLS = 8
 
     # ===========================================================
     # MÉTODOS PÚBLICOS
@@ -40,7 +38,9 @@ module Irrgarten
 
       # 3. Inicializar el resto
       @monsters = []
-      @labyrinth = Labyrinth.new(ROWS, COLS, EXIT_ROW, EXIT_COL) # Usa las constantes
+
+      @labyrinth = Labyrinth.new(ROWS, COLS) # Usa las constantes
+
       @log = ''
 
       # 4. Configurar tablero
@@ -135,11 +135,11 @@ module Irrgarten
 
     # Métodos de logging para registrar eventos importantes en el juego.
     def log_player_won
-      @log += "El jugador ha ganado la partida!\n"
+      @log += "El jugador ha ganado el combate!\n"
     end
 
     def log_monster_won
-      @log += "El monstruo ha ganado la partid!\n"
+      @log += "El monstruo ha ganado el combate!\n"
     end
 
     def log_resurrected

@@ -21,18 +21,59 @@ module Irrgarten
     # @param exit_row Fila de la salida del laberinto
     # @param exit_col Columna de la salida del laberinto
     # @return Objeto de la clase Labyrinth
-    def initialize(n_rows, n_cols, exit_row, exit_col)
+    def initialize(n_rows, n_cols)
       @n_rows = n_rows
       @n_cols = n_cols
-      @exit_row = exit_row
-      @exit_col = exit_col
 
+      # 1. Crear arrays 2D inicializados a nil o EMPTY_CHAR según corresponda
       @monsters = Array.new(n_rows) { Array.new(n_cols, nil) }
       @players = Array.new(n_rows) { Array.new(n_cols) }
       @labyrinth = Array.new(n_rows) { Array.new(n_cols, EMPTY_CHAR) }
-      @labyrinth[exit_row][exit_col] = EXIT_CHAR
 
-      # Aniadir marco de 'X' y aniadirlos en el laberinto aleatoriamente
+      # 2. ANIADIR MUROS EXTERIORES (BLOCK_CHAR = 'X')
+      # Filas superior e inferior
+      (0...n_cols).each do |j|
+        @labyrinth[0][j] = BLOCK_CHAR # Primera fila
+        @labyrinth[n_rows - 1][j] = BLOCK_CHAR # Última fila
+      end
+      # Columnas izquierda y derecha
+      (0...n_rows).each do |i|
+        @labyrinth[i][0] = BLOCK_CHAR # Primera columna
+        @labyrinth[i][n_cols - 1] = BLOCK_CHAR # Última columna
+      end
+
+      # 3. ANIADIR MUROS INTERIORES
+      row, col = 2, 2
+      if pos_ok?(row, col) && !(@exit_row == row && @exit_col == col)
+        @labyrinth[row][col] = BLOCK_CHAR
+      end
+      row, col = 2, 3
+      if pos_ok?(row, col) && !(@exit_row == row && @exit_col == col)
+        @labyrinth[row][col] = BLOCK_CHAR
+      end
+      row, col = 3, 2
+      if pos_ok?(row, col) && !(@exit_row == row && @exit_col == col)
+        @labyrinth[row][col] = BLOCK_CHAR
+      end
+
+      # 4. GENERAR Y COLOCAR LA SALIDA ALEATORIA INTERNA ('E')
+      random_exit_row = 0 # Inicializar fuera del bucle
+      random_exit_col = 0 # Inicializar fuera del bucle
+      loop do
+        # Genera fila entre 1 y n_rows-2 (inclusive)
+        random_exit_row = Dice.random_pos(@n_rows - 2) + 1
+        # Genera columna entre 1 y n_cols-2 (inclusive)
+        random_exit_col = Dice.random_pos(@n_cols - 2) + 1
+
+        # Sale del bucle si la casilla generada NO es un muro
+        break unless @labyrinth[random_exit_row][random_exit_col] == BLOCK_CHAR
+      end
+
+      # Asignar y colocar la salida
+      @exit_row = random_exit_row # Guardar la fila generada
+      @exit_col = random_exit_col # Guardar la columna generada
+      @labyrinth[@exit_row][@exit_col] = EXIT_CHAR # Poner 'E'
+
     end
 
     # Indica si hay un ganador (un jugador en la salida)

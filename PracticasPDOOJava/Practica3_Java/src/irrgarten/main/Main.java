@@ -22,7 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
         // 1. Crear el modelo (el juego con 2 jugadores, por ejemplo)
-        Game game = new Game(1); 
+        Game game = new Game(2); 
         
         // 2. Crear la vista (la interfaz textual)
         // Asegurar de que el nombre del paquete UI coincide.

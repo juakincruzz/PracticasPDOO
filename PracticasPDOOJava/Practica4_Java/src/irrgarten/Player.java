@@ -1,7 +1,7 @@
 package irrgarten;
 
 import java.util.ArrayList;
-import java.util.Iterator; // Nueva implementaciónń
+import java.util.Iterator; // Nueva implementación
 
 /**
  * Representa un jugador dentro del laberinto
@@ -14,7 +14,7 @@ import java.util.Iterator; // Nueva implementaciónń
  * 
  * @author Joaquín Cruz Lorenzo
  */
-public class Player {
+public class Player extends LabyrinthCharacter {
     // ==================================
     // CONSTANTES DE CLASE
     // ==================================
@@ -23,92 +23,68 @@ public class Player {
     private static final int INITIAL_HEALTH = 10;
     private static final int HITS2LOSE = 3;
     
-    // ==================================
-    // ATRIBUTOS DE INSTANCIA 
-    // ==================================
-    private String name;
     private char number;
-    private float intelligence, strength, health;
-    private int row, col, consecutiveHits = 0;
+    private int consecutiveHits = 0;
     
     private ArrayList<Weapon> weapons = new ArrayList();
     private ArrayList<Shield> shields = new ArrayList();
+    
+    // ELIMINO todos los atributos de instancia repetidos. 
+    // Ya que los usamos en LabyrinthCharacter
+    // ==================================
+    // ATRIBUTOS DE INSTANCIA 
+    // ==================================
+    // private String name; 
+    // private float intelligence, strength, health;
+    // private int row, col, 
     
     // ===============================================
     // MÉTODOS PÚBLICOS
     // ===============================================
     
     /**
-     * Constructor
+     * Constructor principal del jugador.
      * @param number
      * @param intelligence
      * @param strength 
      */
     public Player(char number, float intelligence, float strength) {
+        super ("Player " + number, intelligence, strength, INITIAL_HEALTH);
         this.number = number;
-        this.intelligence = intelligence;
-        this.strength = strength;
-        this.health = INITIAL_HEALTH;
-        this.row = -1;
-        this.col = -1;
-        this.name = "Player #" + number;
+    }
+    
+    public Player(Player other) {
+        // Llamo al constructor de copia de la superclase (LabyrinthCharacter)
+        super(other);
+        
+        // Copiamos los atributos PROPIOS de Player
+        this.number = other.number;
+        this.consecutiveHits = other.consecutiveHits;
+        
+        // Copia de armas y escudos
+        for (Weapon w : weapons) {
+            this.weapons.add(new Weapon(w));
+        }
+        
+        for (Shield s : shields) {
+            this.shields.add(new Shield(s));
+        }
     }
     
     /**
      * Restaura al jugador al estado inicial.
      * <ul>
-     *          <li> Vacía armas y escudos. </li>
      *          <li> Reinicia salud e impactos consecutivos. </li>
      * </ul>
      */
     public void resurrect() {
-        weapons.clear();
-        shields.clear();
-        health = INITIAL_HEALTH;
-        consecutiveHits = 0;
+        setHealth(INITIAL_HEALTH); // setHealth es protected de LabyrinthCharacter.
+        this.consecutiveHits = 0;
     }
 
-    /**
-     * 
-     * @return fila actual del jugador 
-     */
-    public int getRow() {
-        return row;
-    }
+    public char getNumber() { return number; }
+
     
-    /**
-     * 
-     * @return columna actual del jugador
-     */
-    public int getCol() {
-        return col;
-    }
-    
-    /**
-     * 
-     * @return número del jugador 
-     */
-    public char getNumber() {
-        return number;
-    }
-    
-    /**
-     * Cambia la posicion del jugador dentro del laberinto.
-     * @param row
-     * @param col 
-     */
-    public void setPos(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
-    
-    /**
-     * Indica si el jugador está muerto (salud menor o igual a 0).
-     * @return true si el jugador está muerto, false en caso contrario.
-     */
-    public boolean dead() {
-       return health <= 0;
-    }
     
     /**
      * Calucla la potencia de ataque del jugador.
@@ -116,7 +92,7 @@ public class Player {
      * @return  potencia de ataque total
      */
     public float attack() {
-        return strength + sumWeapons();
+        return getStrength() + sumWeapons();
     }
     
     /**
@@ -132,8 +108,10 @@ public class Player {
     
     @Override
     public String toString() {
-        return "Player{" + "name= " + name + ", number= " + number + ", intelligence=" + intelligence + ", strength= " + strength + ", health= " + health + 
-                ", row= " + row + ", col= " + col + ", consecutiveHits= " + consecutiveHits + ", weapons= " + weapons + ", shields= " + shields + '}';
+        String baseState = super.toString();
+        String playerState = "Hits: " + consecutiveHits + "\n" + " Weapons: " + weapons.toString() + "\n" + " Shields: " + shields.toString();
+        
+        return baseState + playerState;
     }
     
     // ==================================
@@ -196,8 +174,8 @@ public class Player {
         
         int extraHealth = Dice.healthReward(); // Diagrama 1.7: healthReward
         
-        // Diagrama health += extraHealth
-        health += extraHealth;
+       
+        setHealth(getHealth() + extraHealth);
     }
     
     
@@ -209,7 +187,7 @@ public class Player {
      * Suma la potencia de todas las armas equipadas (consumiendo sus usos)
      * @return suma total de ataque de armas activas
      */
-    private float sumWeapons() {
+    protected float sumWeapons() {
         float total = 0.0f;
         
         for (Weapon w : weapons) total += w.attack();
@@ -221,7 +199,7 @@ public class Player {
      * Suma la capacidad de protección de todos los escudos (consumiendo sus usos)
      * @return  protección total ofrecida por los escudos
      */
-    private float sumShields() {
+    protected float sumShields() {
         float total = 0.0f;
         
         for (Shield s : shields) total += s.protect();
@@ -234,8 +212,8 @@ public class Player {
      * <p> {@code defensiveEnergy = intelligence + sumShields()} </p>
      * @return  valor de energía defensiva
      */
-    private float defensiveEnergy() {
-        return intelligence + sumShields();
+    protected float defensiveEnergy() {
+        return getIntelligence() + sumShields();
     }
     
     /**
@@ -252,12 +230,7 @@ public class Player {
         consecutiveHits = 0;
     }
     
-    /**
-     * Resta un punto de salud al jugador.
-     */
-    private void gotWounded() {
-        health--;
-    }
+
     
     /**
      * Genera un arma nueva con valores aleatorios dados por {@link Dice}.
@@ -372,4 +345,15 @@ public class Player {
         
         return lose;
     }
+    
+    // LISTA DE MÉTODOS SUPRIMIDOS YA QUE SE USAN AHORA EN LabyrinthCharacter
+    // public int getRow() { return row; }
+    // public int getCol() { return col; }
+    // public char getNumber() { return number; }
+    // public void setPos(int row, int col) {
+    //    this.row = row;
+    //    this.col = col;
+    // }
+    // private void gotWounded() { health--; }
+    // public boolean dead() { return health <= 0; }
 }

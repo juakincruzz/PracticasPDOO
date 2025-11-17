@@ -8,32 +8,39 @@ package irrgarten;
  *
  * @author Joaquín Cruz Lorenzo
  */
-public class Weapon {
+public class Weapon extends CombatElement {
+    // ELIMINO LOS ATRIBUTOS 'power' y 'uses'
+    // ya que están en la superclase
     // Atributos privados.
-    private float power;
-    private int uses;
+    // private float power;    --> ELIMINADO
+    // private int uses;           --> ELIMINADO
     
-    // Constructor.
+    // Modifico ahora el constructor..
     public Weapon(float power, int uses) {
-        this.power = power;
-        this.uses = uses;
+        // Llamo al constructor en la superclase (CombatElement)
+        // 'power' se convierte en 'effect' de la superclase
+        super(power, uses);
     }
     
-    // Metodo de ataque que devuelva un numero en coma flotante (float), publico
-    public float attack(){
-        if (uses > 0){
-            uses--;
-            return power;
-        }
-        return 0.0f;
+    public Weapon(Weapon other) {
+        super(other.getEffect(), other.getUses());
     }
-
+    
+    // Método de ataque que devuelva un número en coma flotante (float), público
+    // Delego en 'produceEffect'
+    public float attack(){
+        // Uso el método de la superclase
+        return produceEffect();
+    }
+    
+    // ELIMINO EL MÉTODO discard()
+    // Ya que NO es necesario, lo hereda de CombatElement.
+    // public boolean discard() {
+    //      return Dice.discardElement(uses);
+    // }
+    
     @Override
     public String toString() {
-        return "W[" + "power=" + power + ", uses=" + uses + ']';
-    }
-    
-    public boolean discard() {
-        return Dice.discardElement(uses);
+        return "W[" + "power=" + getEffect() + ", uses=" + getUses() + ']';
     }
 }

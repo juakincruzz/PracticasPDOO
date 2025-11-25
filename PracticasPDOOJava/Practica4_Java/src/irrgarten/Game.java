@@ -115,8 +115,31 @@ public class Game {
                  manageReward(winner); // Diagrama 1.7: manageReward(winner)
              }
          } else {
-             manageResurrection(); // Diagrama 1.8: manageResurrection()
-         }
+             // INICIO CAMBIO P4
+             boolean resurrect = Dice.resurrectPlayer();
+             
+             if (resurrect) {
+                 // 1. Resurrección y conversión a FuzzyPlayer
+                 // Creo el FuzzyPlayer copiando al jugador muerto.
+                 FuzzyPlayer fuzzy = new FuzzyPlayer(currentPlayer);
+                 
+                 // Le devolvemos la vida (método resurrect del FuzzyPlayer)
+                 fuzzy.resurrect();
+                 
+                 // 2. Sustitución (Polimorfismo)
+                 // Sustituyo el objeto antiguo por el nuevo en la lista de jugadores
+                 players.set(currentPlayerIndex, fuzzy);
+                 
+                  // Actualizo la referencia del turno actual
+                  currentPlayer = fuzzy;
+                  
+                  // Registro el evento
+                 logResurrected();
+             } else {
+              // Si no resucita, pasa turno
+                 logPlayerSkipTurn();
+                }   
+         } 
          
          boolean endGame = finished(); // Diagrama 1.9: finished();
          

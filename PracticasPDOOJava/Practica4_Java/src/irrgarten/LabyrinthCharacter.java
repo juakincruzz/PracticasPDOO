@@ -16,6 +16,9 @@ public abstract class LabyrinthCharacter {
     private String name;
     private float intelligence, strength, health;
     private int row, col;
+    
+    protected WeaponCardDeck weaponCardDeck;
+    protected ShieldCardDeck shieldCardDeck;
 
     /**
      * Constructor principal de un personaje.
@@ -121,6 +124,11 @@ public abstract class LabyrinthCharacter {
             this.health = 0;
     }
     
+    @Override
+    public String toString() {
+        return name + "[H: " + health + ", I: " + intelligence + ", S: " + strength + ", Pos: (" + row + ", " + col + ")";
+    }
+    
     /**
      * Calcula la intensidad del ataque del personaje.
      * @return El valor del ataque
@@ -132,5 +140,5 @@ public abstract class LabyrinthCharacter {
      * @param attack receivedAttack El valor del ataque recibido
      * @return true si el personaje ha muerto tras el ataque
      */
-    public abstract boolean defend(float receivedAttack); // Aquí no sería receivedAttack?
+    public abstract boolean defend(float receivedAttack);
 }

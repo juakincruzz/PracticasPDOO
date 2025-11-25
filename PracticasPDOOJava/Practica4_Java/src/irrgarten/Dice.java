@@ -5,6 +5,7 @@
 package irrgarten;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 /**
  *
@@ -81,5 +82,27 @@ public final class Dice {
         float p = 1.0f - (usesLeft / (float) MAX_USES);
         
         return generator.nextFloat() < p;
+    }
+    
+    /**
+     * Método añadido para la P4
+     * Decide la dirección de un FuzzyPlayer
+     * @param preference Dirección preferente (si se comporta cuerdamente).
+     * @param validMoves Lista de movimientos posibles.
+     * @param intelligence Inteligencia del jugador
+     * @return Dirección elegida.
+     */
+    public static Directions nextStep(Directions preference, ArrayList<Directions> validMoves, float intelligence) {
+        // Calculamos la probabiblidad de respetar la preferencia.
+        // Como intelligence está entre 0 y MAX_INTELLIGENCE (10), divido para tener un valor entre 0 y 1.
+        float probabilidad = intelligence / MAX_INTELLIGENCE;
+        
+        if (generator.nextFloat() < probabilidad) {
+            // Si tiene suerte (basada en su inteligencia), respeta su decisión.
+            return preference;
+        } else {
+            // Si no, se mueve "a lo loco" eligiendo una válida al azar.
+            return validMoves.get(generator.nextInt(validMoves.size()));
+        }
     }
 }

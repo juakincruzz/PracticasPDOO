@@ -20,7 +20,7 @@ module Irrgarten
 
     # Selecciona aleatoriamente el jugador que comienza
     # @param nplayers [Integer] numero de jugadores
-    # @return [Integer] indice del jugador que empieza
+    # @return [Integer] índice del jugador que empieza
     def self.who_starts(nplayers)
       rand(0...nplayers)
     end
@@ -77,7 +77,7 @@ module Irrgarten
     # Genera un valor aleatorio para el poder del escudo
     # @param ninguno
     # @return [Float] valor de poder del escudo
-    def self.shields_power()
+    def self.shield_power()
       rand * MAX_SHIELD
     end
 
@@ -101,6 +101,22 @@ module Irrgarten
     def self.discard_element(uses_left)
       p = 1.0 - (uses_left.to_f / MAX_USES)
       rand < p
+    end
+
+    # Metodo para FuzzyPlayer
+    def self.next_step(preference, valid_moves, intelligence)
+      # intelligence es un float entre 0 y MAX_INTELLIGENCE (10.0)
+      prob = intelligence / MAX_INTELLIGENCE
+
+      if @generator.rand < prob
+        return preference
+      else
+        # Elige uno al azar de los válidos
+        if valid_moves.empty?
+          return preference # Por seguridad
+        end
+        return valid_moves.sample
+      end
     end
   end
 end

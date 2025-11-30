@@ -71,7 +71,7 @@ module Irrgarten
     def next_step(preferred_direction)
       log = ""
 
-      dead = @current_player.dead? # Diagrama 1.1: dead()
+      dead = @current_player.dead # Diagrama 1.1: dead()
 
       # Diagrama alt: [!dead]
       unless dead # == if !dead

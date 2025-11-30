@@ -11,7 +11,7 @@ require 'Controller/controller'
 # --- Programa Principal ---
 
 # 1. Crear el Modelo (juego con 2 jugadores, por ejemplo)
-game = Irrgarten::Game.new(2)
+game = Irrgarten::Game.new(1)
 
 # 2. Crear la Vista
 ui = UI::TextUI.new

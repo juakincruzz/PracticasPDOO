@@ -14,7 +14,7 @@ import java.util.Scanner;
  * Es la única clase que interactúa con el usuario
  * @author Joaquín Cruz Lorenzo
  */
-public class TextUI {
+public class TextUI implements UI {
     // Atributo para leer de la consola
     private Scanner in = new Scanner(System.in);
     

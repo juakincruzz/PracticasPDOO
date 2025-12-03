@@ -7,12 +7,10 @@ package irrgarten.main;
 // Importo las clases de los otros paquetes
 import irrgarten.Game;
 import irrgarten.Controller.Controller; 
-import irrgarten.UI.TextUI;
+import irrgarten.UI.GraphicalUI;
 
 /**
  * Programa principal que inicia el juego.
- * Su única responsabilidad es instanciar el Modelo, la Vista y el Controlador.
- * Y arrancar el juego.
  * @author Joaquín Cruz Lorenzo
  */
 public class Main {
@@ -26,7 +24,7 @@ public class Main {
         
         // 2. Crear la vista (la interfaz textual)
         // Asegurar de que el nombre del paquete UI coincide.
-        TextUI ui = new TextUI();
+        GraphicalUI ui = new GraphicalUI();
         
         // 3. Crear el Controlador (y pasarle el Modelo y la Vista)
         // Asegurar de que el nombre del paquete Controller coincide.

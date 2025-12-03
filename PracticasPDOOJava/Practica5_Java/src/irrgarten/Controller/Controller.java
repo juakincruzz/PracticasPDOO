@@ -6,7 +6,7 @@ package irrgarten.Controller;
 
 import irrgarten.Directions;
 import irrgarten.Game;
-import irrgarten.UI.TextUI;
+import irrgarten.UI.UI;
 
 /**
  * Clase controladora que coordina el Modelo (Game) y la Vista (TextUI).
@@ -16,14 +16,14 @@ import irrgarten.UI.TextUI;
 public class Controller {
     // --- Atributos (asociaciones del diagrama) ---
     private Game game;
-    private TextUI ui;
+    private UI ui;
 
     /**
      * Constructor que recibe e incializa el modelo y la vista.
      * @param game (Estado del juego)
      * @param ui   (Interfaz de usuario)
      */
-    public Controller(Game game, TextUI ui) {
+    public Controller(Game game, UI ui) {
         this.game = game;
         this.ui = ui;
     }
